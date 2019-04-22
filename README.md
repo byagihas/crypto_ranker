@@ -4,6 +4,7 @@ Built this to pick cryptos to buy with node-binance-trader, currently a WIP.
 
 Shows current market mood and gainers and losers along with % change and volume.
 
- > npm install --save-exact
- > node index.js
+> npm install --save-exact.
+
+> node index.js.
 
