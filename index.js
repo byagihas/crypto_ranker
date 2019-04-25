@@ -1,7 +1,6 @@
-const request = require('request');
+const request = require('request')
 const cheerio = require('cheerio')
-const cryptocurrencies = require('cryptocurrencies');
-const phantom = require('phantom');
+const phantom = require('phantom')
 
 let dayMood = "";
 let gainers = [];
