@@ -6,6 +6,8 @@ let dayMood = "";
 let gainers = [];
 let losers = [];
 
+let fcrypto = {};
+
 request('https://coinmarketcap.com/', function(err, resp, html) {
     if (!err){
       const $ = cheerio.load(html)
@@ -64,17 +66,13 @@ request('https://coinmarketcap.com/', function(err, resp, html) {
         let fmarketcap = marketcap.split('\\n').join('').split('"').join('').split('|')
         let fpercentage = percentage.split('"').join('').split('%').join('').split('|')
         let fvolume = volume.split('"').join('').split('|')
-        //let fcrypto = JSON.stringify(cryptocurrencies).split('}').join('').split('{').join('').split('"').join('').split(',');
-
+        
         // Set up separate lists with keys for modular use
           Object.keys(fname)
            .forEach(key => nameHolder[key] = fname[key]);
 
           Object.keys(fpercentage)
            .forEach(key => percentageHolder[key] = fpercentage[key]);
-
-         // Object.keys(fcrypto)
-          // .forEach(key => cryptoHolder[key] = fcrypto[key]);
           
           Object.keys(fprice)
            .forEach(key => priceHolder[key] = fprice[key]);
@@ -88,18 +86,24 @@ request('https://coinmarketcap.com/', function(err, resp, html) {
            Object.keys(fdataccslug)
            .forEach(key => dataccSlugHolder[key] = fdataccslug[key]);
           
+
           // Load all objects into a Gainer or Loser array for example 
            for(i=0;i<=fname.length-1;i++){
-             if(fpercentage[i] <= -6){
-                losers.push("[" + fname[i] + "]|%:" + fpercentage[i] + "|Vol:" + fvolume[i] + "|Price:"
-                + fprice[i] + "|Marketcap:" + fmarketcap[i] + "|id:" + fdataccid[i] +  "|name:" + fdataccslug[i] +  "\n")
+              const cryptocurrencies = "{  \"id\":\"" + fdataccid[i] +  "\", \"name\":\"" + fdataccslug[i] + "\", \"symbol\":\"" + fname[i] + "\", \"percentage\":\"" + fpercentage[i] + "\", \"vol\":\"" + fvolume[i] + "\", \"price\":\""
+              + fprice[i] + "\", \"marketcap\":\"" + fmarketcap[i] + "\"}"
+              fcrypto = JSON.parse(cryptocurrencies);
+    
+              Object.keys(fcrypto)
+              .forEach(key => cryptoHolder[key] = fcrypto[key]);
+    
+             if(fcrypto.percentage <= -6){
+                losers.push(fcrypto.symbol)
              }
-             else if(fpercentage[i] >= 3){
-                gainers.push("[" + fname[i] + "]|%:" + fpercentage[i] + "|Vol:" + fvolume[i] + "|Price:"
-                + fprice[i] + "|Marketcap:" + fmarketcap[i] + "|id:" + fdataccid[i] +  "|name:" + fdataccslug[i] + "\n")
+             else if(fcrypto.percentage >= 3){
+                gainers.push(fcrypto.symbol)
              }
            }
-          
+           
          // Display Gainers and Losers first depending on if Bull or Bear mood, set dayMood var for other purposes.
            if(gainers.length > losers.length){
              dayMood = "BULL";
