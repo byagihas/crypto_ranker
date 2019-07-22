@@ -64,7 +64,7 @@ request('https://coinmarketcap.com/', function(err, resp, html) {
         let fmarketcap = marketcap.split('\\n').join('').split('"').join('').split('|')
         let fpercentage = percentage.split('"').join('').split('%').join('').split('|')
         let fvolume = volume.split('"').join('').split('|')
-        let fcrypto = JSON.stringify(cryptocurrencies).split('}').join('').split('{').join('').split('"').join('').split(',');
+        //let fcrypto = JSON.stringify(cryptocurrencies).split('}').join('').split('{').join('').split('"').join('').split(',');
 
         // Set up separate lists with keys for modular use
           Object.keys(fname)
@@ -73,8 +73,8 @@ request('https://coinmarketcap.com/', function(err, resp, html) {
           Object.keys(fpercentage)
            .forEach(key => percentageHolder[key] = fpercentage[key]);
 
-          Object.keys(fcrypto)
-           .forEach(key => cryptoHolder[key] = fcrypto[key]);
+         // Object.keys(fcrypto)
+          // .forEach(key => cryptoHolder[key] = fcrypto[key]);
           
           Object.keys(fprice)
            .forEach(key => priceHolder[key] = fprice[key]);
