@@ -1,4 +1,5 @@
 const request = require('request')
+const ObjectsToCsv = require('objects-to-csv')
 const rp = require('request-promise')
 const cheerio = require('cheerio')
 const fs = require('fs')
@@ -6,8 +7,10 @@ const fs = require('fs')
 let dayMood = ""
 let gainers = []
 let losers = []
+let cryptolist = []
 
 let fcrypto = {}
+
 
 rp('https://coinmarketcap.com/', function(err, resp, html) {
     if (!err){
@@ -98,24 +101,27 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
           .forEach(key => sparkHolder[key] = fsparkline[key]);
           
           // Construct object from selector fields
-          let cryptocurrencies = "{  \"id\":\"" + fdataccid[i] +  "\", \"name\":\"" + fdataccslug[i] + "\", \"symbol\":\"" + fname[i] + "\", \"percentage\":\"" + fpercentage[i] + "\", \"vol\":\"" + fvolume[i] + "\", \"price\":\""
-          + fprice[i] + "\", \"marketcap\":\"" + fmarketcap[i] + "\", \"sparkline\": \"" + fsparkline[i] + "\" }"
+          let cryptocurrencies = "{  \"ID\":\"" + fdataccid[i] +  "\", \"NAME\":\"" + fdataccslug[i] + "\", \"SYMBOL\":\"" + fname[i] + "\", \"PERCENTAGE\":\"" + fpercentage[i] + "\", \"VOLUME\":\"" + fvolume[i] + "\", \"PRICE\":\""
+          + fprice[i] + "\", \"MARKETCAP\":\"" + fmarketcap[i] + "\", \"SPARKLINEURL\": \"" + fsparkline[i] + "\" }"
           fcrypto = JSON.parse(cryptocurrencies);
-
+          
           Object.keys(fcrypto)
           .forEach(key => cryptoHolder[key] = fcrypto[key]);
 
+          cryptolist.push(fcrypto)
+          
+          
           // Push lists for example
-          if(fcrypto.percentage <= -3){
+          if(fcrypto.PERCENTAGE <= -3){
             
-            losers.push("\n" + fcrypto.symbol + "," + fcrypto.percentage)
+            losers.push("\n" + fcrypto.SYMBOL + "," + fcrypto.PERCENTAGE)
           }
-          else if(fcrypto.percentage >= 3){
+          else if(fcrypto.PERCENTAGE >= 3){
             
-            gainers.push("\n" + fcrypto.symbol + "," + fcrypto.percentage)
+            gainers.push("\n" + fcrypto.SYMBOL + "," + fcrypto.PERCENTAGE)
           }          
         }
-
+        
         // Display Gainers and Losers first depending on if Bull or Bear mood, set dayMood var for other purposes.
         if(gainers.length > losers.length){
             dayMood = "BULL";
@@ -133,20 +139,12 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
       });
     }
 }).then(function(){
-  // Write CSV with gainers and losers
-  fs.writeFile('gainers.csv', gainers, 'utf8', function (err) {
-    if (err) {
-      console.log('Some error occured - file either not saved or corrupted file saved.');
-    } else{
-      console.log('Gainers saved');
+  new ObjectsToCsv(cryptolist).toDisk('./list.csv', function(err){
+    if(err){
+      console.log("Erro saving filing")
     }
-  });
-
-  fs.writeFile('losers.csv', losers, 'utf8', function (err) {
-    if (err) {
-      console.log('Some error occured - file either not saved or corrupted file saved.');
-    } else{
-      console.log('Losers saved');
+    else {
+      console.log("Saved cryptolist")
     }
   });
 
