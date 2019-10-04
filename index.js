@@ -64,7 +64,7 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
         let fdataccid =  dataccid.split('"').join('').split('|')
         let fdataccslug = dataccslug.split('"').join('').split('|')
         let fprice = price.split('"').join('').split('|')
-        let fmarketcap = marketcap.split('\\n').join('').split('"').join('').split('|')
+        let fmarketcap = marketcap.split('\\n').join('').split('"').join('').split('|').replace(',','|')
         let fpercentage = percentage.split('"').join('').split('%').join('').split('|')
         let fvolume = volume.split('"').join('').split('|')
         let fsparkline = {}
@@ -110,14 +110,11 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
 
           cryptolist.push(fcrypto)
           
-          
           // Push lists for example
           if(fcrypto.PERCENTAGE <= -3){
-            
             losers.push("\n" + fcrypto.SYMBOL + "," + fcrypto.PERCENTAGE)
           }
           else if(fcrypto.PERCENTAGE >= 3){
-            
             gainers.push("\n" + fcrypto.SYMBOL + "," + fcrypto.PERCENTAGE)
           }          
         }
@@ -135,7 +132,6 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
             console.log("| --- Losers --- |: \n" + losers);
             console.log("| --- Gainers --- |: \n" + gainers);
         }
-           
       });
     }
 }).then(function(){
@@ -147,5 +143,4 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
       console.log("Saved cryptolist")
     }
   });
-
 });
