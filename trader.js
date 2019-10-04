@@ -1,23 +1,18 @@
 'use strict';
 
 require('dotenv').config()
+
+const fs = require('fs')
 const request = require('request')
 const rp = require('request-promise')
 const express = require('express')
-const csvjson = require('csvjson');
-const fs = require('fs');
-const app = express()
-const lessMiddleware = require('less-middleware')
-const ejs = require('ejs')
+const csvjson = require('csvjson')
 const bodyParser = require('body-parser')
-const nodemailer = require('nodemailer')
 const helmet = require('helmet')
-const escapeHTML = require('escape-html')
 const compression = require('compression')
-const parseurl = require('parseurl')
-const session = require('express-session')
-const hat = require('hat')
 const rateLimit = require('express-rate-limit')
+
+const app = express()
 
 app.enable('trust proxy') // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 
@@ -75,5 +70,4 @@ app.get('/list', function(req, res){
   })
 })
 app.listen(8080, 'localhost',  () => console.log('App running on 8080'))
-
 //app.listen(8080, '10.138.60.17',  () => console.log('App running on 8080'))
