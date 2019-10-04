@@ -64,7 +64,7 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
         let fdataccid =  dataccid.split('"').join('').split('|')
         let fdataccslug = dataccslug.split('"').join('').split('|')
         let fprice = price.split('"').join('').split('|')
-        let fmarketcap = marketcap.split('\\n').join('').split('"').join('').split('|').replace(',','|')
+        let fmarketcap = marketcap.split('\\n').join('').split('"').join('').split('|')
         let fpercentage = percentage.split('"').join('').split('%').join('').split('|')
         let fvolume = volume.split('"').join('').split('|')
         let fsparkline = {}
@@ -101,7 +101,7 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
           .forEach(key => sparkHolder[key] = fsparkline[key]);
           
           // Construct object from selector fields
-          let cryptocurrencies = "{  \"ID\":\"" + fdataccid[i] +  "\", \"NAME\":\"" + fdataccslug[i] + "\", \"SYMBOL\":\"" + fname[i] + "\", \"PERCENTAGE\":\"" + fpercentage[i] + "\", \"VOLUME\":\"" + fvolume[i] + "\", \"PRICE\":\""
+          let cryptocurrencies = "{  \"RANK\":\"" + (i + 1) + "\", \"ID\":\"" + fdataccid[i] +  "\", \"NAME\":\"" + fdataccslug[i] + "\", \"SYMBOL\":\"" + fname[i] + "\", \"PERCENTAGE\":\"" + fpercentage[i] + "\", \"VOLUME\":\"" + fvolume[i] + "\", \"PRICE\":\""
           + fprice[i] + "\", \"MARKETCAP\":\"" + fmarketcap[i] + "\", \"SPARKLINEURL\": \"" + fsparkline[i] + "\" }"
           fcrypto = JSON.parse(cryptocurrencies);
           

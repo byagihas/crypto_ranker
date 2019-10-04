@@ -41,7 +41,7 @@ app.use(helmet.featurePolicy({
   }
 }))
 
-// Compression and Content
+// Compression and content for future web app client
 app.use(compression())
 app.set('view engine', 'ejs')
 app.set('json spaces', 40)
@@ -56,13 +56,15 @@ app.get('/', function(req, res) {
     res.render('base')
 })
 
+// Converts list.csv provided from index.js to JSON object
+// Responds with top 100 crypto information formatted in JSON file.
 app.get('/list', function(req, res){
   fs.readFile('../crypto_ranker/list.csv', 'utf-8', function(err, data){
-    if(err) { throw err }
+    if(err) { console.log('Error on csv file read'); throw err }
     let options = {
-      delimiter : ',', // optional
-      quote     : '"' // optional
-    };
+      delimiter : ',',
+      quote     : '"' 
+    }
     const cryptoData = csvjson.toObject(data, options)
     fs.writeFile('./crypto_data.json', cryptoData, function(err){
       if (err) throw err
@@ -71,8 +73,7 @@ app.get('/list', function(req, res){
       res.send(cryptoData)
     })
   })
-
-  })
+})
 app.listen(8080, 'localhost',  () => console.log('App running on 8080'))
 
 //app.listen(8080, '10.138.60.17',  () => console.log('App running on 8080'))
