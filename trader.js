@@ -14,7 +14,7 @@ const rateLimit = require('express-rate-limit')
 
 const app = express()
 
-app.enable('trust proxy') // only if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
+app.enable('trust proxy') // Needed to use for reverse proxy
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -70,4 +70,3 @@ app.get('/list', function(req, res){
   })
 })
 app.listen(8080, 'localhost',  () => console.log('App running on 8080'))
-//app.listen(8080, '10.138.60.17',  () => console.log('App running on 8080'))
