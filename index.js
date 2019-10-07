@@ -3,7 +3,9 @@ const ObjectsToCsv = require('objects-to-csv')
 const rp = require('request-promise')
 const cheerio = require('cheerio')
 const fs = require('fs')
-
+const csvjson = require('csvjson')
+const cron = require('cron')
+ 
 let dayMood = ""
 let gainers = []
 let losers = []
@@ -150,4 +152,17 @@ rp('https://coinmarketcap.com/', function(err, resp, html) {
       console.log("Saved cryptolist")
     }
   })
+  fs.readFile('../crypto_ranker/list.csv', 'utf-8', function(err, data){
+    if(err) { console.log('Error on csv file read'); throw err }
+    let options = {
+      delimiter : ',',
+      quote     : '"' 
+    }
+    cryptoData = JSON.stringify(csvjson.toObject(data, options))
+    fs.writeFile('./crypto_data.json', cryptoData, function(err){
+      if (err) throw err
+      console.log('JSON file saved - Sending response')
+    })
+  })
+  
 })

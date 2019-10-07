@@ -14,6 +14,11 @@ const rateLimit = require('express-rate-limit')
 
 const app = express()
 
+let cryptoData = []
+let Gainers = []
+let Losers = []
+let Targets = []
+
 app.enable('trust proxy') // Needed to use for reverse proxy
 
 const limiter = rateLimit({
@@ -60,7 +65,7 @@ app.get('/list', function(req, res){
       delimiter : ',',
       quote     : '"' 
     }
-    const cryptoData = csvjson.toObject(data, options)
+    cryptoData = JSON.stringify(csvjson.toObject(data, options))
     fs.writeFile('./crypto_data.json', cryptoData, function(err){
       if (err) throw err
       console.log('JSON file saved - Sending response')
@@ -69,4 +74,24 @@ app.get('/list', function(req, res){
     })
   })
 })
+
+app.get('/rank', function(req, res){
+  let contents = fs.readFileSync("crypto_data.json")
+  let jsonContent = JSON.parse(contents)
+
+  //console.log(jsonContent)
+  for(let i=0;i<jsonContent.length;i++){
+    let price = jsonContent[i].PRICE.replace('$','')
+    if(parseInt(jsonContent[i].PERCENTAGE) <= parseInt("-5")){
+      console.log(jsonContent[i].NAME + ": " + jsonContent[i].PERCENTAGE)
+      Losers.push(jsonContent[i])
+    }
+    else if(parseInt(jsonContent[i].PERCENTAGE) >= parseInt("5")) {
+      console.log(jsonContent[i].NAME + ": " + jsonContent[i].PERCENTAGE)
+      Gainers.push(jsonContent[i])
+    }
+  }
+  
+})
+
 app.listen(8080, 'localhost',  () => console.log('App running on 8080'))
