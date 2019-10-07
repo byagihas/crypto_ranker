@@ -5,7 +5,7 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const csvjson = require('csvjson')
 const cron = require('cron')
- 
+
 let dayMood = ""
 let gainers = []
 let losers = []
