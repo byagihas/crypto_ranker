@@ -38,6 +38,8 @@
     "phantom": "6.2.0",
     "request": "2.88.0",
     "request-promise": "4.2.4",
+    "socks5-http-client": "1.0.4",
+    "socks5-https-client": "1.2.1",
     "webpage": "0.3.0"
   }
 }

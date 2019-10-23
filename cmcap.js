@@ -5,7 +5,7 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const csvjson = require('csvjson')
 const cron = require('node-cron')
-
+const socks = require('socks5-http-client')
 let dayMood = ""
 let gainers = []
 let losers = []
@@ -133,15 +133,17 @@ cron.schedule('* * * * *', () => {
           // Display Gainers and Losers first depending on if Bull or Bear mood, set dayMood var for other purposes.
           if(gainers.length > losers.length){
               dayMood = "BULL";
-              console.log("|| ------------- BULL MOOD ------------- ||\n")
-              console.log("| --- Gainers --- |: \n" + gainers)
-              console.log("| --- Losers --- |: \n" + losers)
+             // console.log("|| ------------- BULL MOOD ------------- ||\n")
+             // console.log("| --- Gainers --- |: \n" + gainers)
+             // console.log("| --- Losers --- |: \n" + losers)
+              console.log("BULL")
           }
           else {
               dayMood = "BEAR";
-              console.log("|| ------------- BEAR MOOD ------------- ||\n")
-              console.log("| --- Losers --- |: \n" + losers)
-              console.log("| --- Gainers --- |: \n" + gainers)
+             // console.log("|| ------------- BEAR MOOD ------------- ||\n")
+             // console.log("| --- Losers --- |: \n" + losers)
+             // console.log("| --- Gainers --- |: \n" + gainers)
+              console.log("BEAR")
           }
         })
       }
