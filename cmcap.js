@@ -18,7 +18,7 @@ losers.push("SYMBOL,PERCENTAGE")
 gainers.push("SYMBOL,PERCENTAGE")
 
 // Schedule to run every minute
-cron.schedule('* * * * *', () => {
+cron.schedule('* * * *', () => {
   rp('https://coinmarketcap.com/', function(err, resp, html) {
       if (!err){
         const $ = cheerio.load(html)
