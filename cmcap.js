@@ -18,7 +18,7 @@ losers.push("SYMBOL,PERCENTAGE")
 gainers.push("SYMBOL,PERCENTAGE")
 
 // Schedule to run every minute
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('* * * * *', () => {
   rp('https://coinmarketcap.com/', function(err, resp, html) {
       if (!err){
         const $ = cheerio.load(html)
@@ -150,7 +150,7 @@ cron.schedule('*/5 * * * *', () => {
   }).then(function(){
     
     // Write JSON file
-    fs.writeFile('./cryptodata.json', cryptolist, function(err){
+    fs.writeFile('./cryptodata.json', JSON.stringify(cryptolist), function(err){
       if (err) throw err
       console.log('JSON file saved - Sending response')
 
