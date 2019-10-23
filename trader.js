@@ -12,6 +12,13 @@ const helmet = require('helmet')
 const compression = require('compression')
 const rateLimit = require('express-rate-limit')
 
+const svgCaptcha = require('svg-captcha')
+const {google} = require('googleapis')
+const OAuth2 = google.auth.OAuth2
+
+const accessToken = ''
+let secrid = hat()
+
 const app = express()
 
 let cryptoData = []
@@ -51,6 +58,34 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(express.static(__dirname + '/public'))
 app.use('/media', express.static(__dirname + '/media'))
+
+/*
+const oauth2Client = new OAuth2(
+  '876361110475-a1mhr51hc8ssoj0ba6veumpb0562h9i3.apps.googleusercontent.com', // ClientID
+  'DqMcaISZWdpjYj0P_YpCUpXC', // Client Secret
+  'https://developers.google.com/oauthplayground' // Redirect URL
+)
+
+// generate a url that asks permissions for Blogger and Google Calendar scopes
+const scopes = [
+  'https://www.googleapis.com/auth/gmail'
+];
+
+const url = oauth2Client.generateAuthUrl({
+  // 'online' (default) or 'offline' (gets refresh_token)
+  access_type: 'offline',
+
+  // If you only need one scope you can pass it as a string
+  scope: scopes
+});
+
+// This will provide an object with the access_token and refresh_token.
+// Save these somewhere safe so they can be used at a later time.
+async function refreshToken() {
+  const {tokens} = await oauth2Client.getToken(code)
+  oauth2Client.setCredentials(tokens);
+  accessToken = tokens.credentials.access_token
+} */
 
 app.get('/', function(req, res) {
     res.render('base')
@@ -94,4 +129,67 @@ app.get('/rank', function(req, res){
   
 })
 
+/*
+app.get('/send', function(req,res) {
+  fs.readFile('../crypto_ranker/crypto_data.json', function(err, data){
+
+      if(err){
+          throw err;
+      }
+      else {
+          let jsonContent = JSON.parse(data)
+          let htmlObject = []
+          let htmlObjectRefined = []
+
+          console.log(jsonContent)
+          
+          for(let i=0;i<jsonContent.length;i++){
+              let tdcolor = ''
+              if(parseInt(jsonContent[i].PERCENTAGE) < 1.00 ){ 
+                  tdcolor = 'red'
+              } else {
+                  tdcolor = 'green'
+              }
+
+              htmlObject.push('<tr><td>' + jsonContent[i].RANK  + '</td><td>' + jsonContent[i].NAME + '</td><td>' 
+              + jsonContent[i].SYMBOL + '</td><td style=\'color:' + tdcolor + ';\'>' + jsonContent[i].PERCENTAGE + '</td><td>' + jsonContent[i].PRICE + '</td></tr>')
+              htmlObjectRefined[i] = JSON.stringify(htmlObject[i]).replace('\"','').replace('[','').replace(']','').replace('\"','').replace('\"','')
+
+          }
+          
+          const smtpTransport = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                      type: 'OAuth2',
+                      user: 'byagihas@gmail.com', // Email
+                      clientId: '876361110475-a1mhr51hc8ssoj0ba6veumpb0562h9i3.apps.googleusercontent.com',
+                      clientSecret: 'DqMcaISZWdpjYj0P_YpCUpXC',
+                      refreshToken: '1/4Hvj28_jJPUCpUcqNXeQIOWhmyANv1yYshr1l5qcEIU',
+                      accessToken: accessToken
+              }
+          })
+          
+          const mailOptions = {
+              from: '<mailer@byagihas.us>',
+              to: 'byagihas@gmail.com', 
+              subject: '! Crypto Rankings',
+              html: '<html><body><div style=\'text-align:center\'display:block\'margin:0\'width:640px\'>' 
+              + '<table style=\'display:block;padding:2em;width:35em;text-align:center;border:1px solid black;font-size:1.25em\'><tr><th>Rank</th><th>Name</th><th>Symbol</th><th>Percentage</th><th>Price</th></tr>'
+              + htmlObjectRefined.join('') + '</table></div></body></html>'
+          }
+      
+          smtpTransport.sendMail(mailOptions, function(error, response) {
+              if (error) {
+                  res.send('Email could not be sent due to error:' + error)
+                  console.log(error);
+              }else {
+                  res.send('Email has been sent successfully')
+                  console.log(htmlObjectRefined.join(''))
+              }
+          })
+
+      }
+  })
+})
+*/
 app.listen(8080, 'localhost',  () => console.log('App running on 8080'))
