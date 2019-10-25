@@ -154,11 +154,6 @@ cron.schedule('* * * * *', () => {
       if (err) throw err
       console.log('JSON file saved - Sending response')
 
-      // Write CSV file
-      new ObjectsToCsv(cryptolist).toDisk('./cryptolist.csv', function(err){
-        if(err) throw err
-        console.log('Saved cryptolist')
-      })
     })
   })
 })
