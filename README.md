@@ -1,15 +1,17 @@
 # Crytpocurrency Percentage Ranker
-Pulls top 100 crypto from Coinmarketcap and sorts based on Volume, Percentage, etc. 
+Pulls top 100 crypto from Coinranking.com Public API and writes the data to a .json file
 
-Shows current market mood and gainers and losers along with % change and volume separated by |
+Old Coinmarketcap.com (cmcap.js) scraper/mood determiner is currently deprecated as significant formatting and memory rework is needed
 
 Todo:
--Clean up formats for more efficient ingest.
--Explore view analyses.
+-Fix/rework cmcap.js scraper.
+-Implement CLI functionality for Coinranking data request module
+-Implement additional parameters for Coinranking API request pull
+-Automate/add data viewer
 
 Use:
 
 > npm install
 
-> node index.js
+> node data.js
 
