@@ -1,35 +1,37 @@
-const request = require('request')
-const ObjectsToCsv = require('objects-to-csv')
-const rp = require('request-promise')
-
+// Simple Nodejs program to pull top 100 cryptocurrencies from the Coinranking Public API
+// Run: node data.js
 const fs = require('fs')
-const csvjson = require('csvjson')
+const path = require('path')
 const cron = require('node-cron')
+const request = require('request')
+const rp = require('request-promise')
 
 let crypto = {}
 
-cron.schedule('* * * * *', () => {
+// Set request parameters here
+// Add CLI functionality and more parameters in the future
+const fiatType = 'USD'
+const lookbackWindow = '7d'
+const numberOfCoins = '100'
 
-    rp('https://api.coinranking.com/v1/public/coins?base=USD&timePeriod=7d&limit=100', function(err, resp, html) {
+// Optional: use node-cron to automate request every minute
+// cron.schedule('* * * * *', () => {
+// Request top 100 Cryptocurrencies in the last seven days from Coinranking Public API
+rp(`https://api.coinranking.com/v1/public/coins?base=${fiatType}&timePeriod=${lookbackWindow}&limit=${numberOfCoins}`, (error, res) => {
 
-        let responsebody = JSON.parse(resp.body)
-        crypto = responsebody.data.coins 
+    if (error) throw error
+    // Create responsebody and crypto objects to parse then store the cryptocurrency data
+    let responsebody = JSON.parse(res.body)
+    crypto = responsebody.data.coins
+    console.log('Data ingested')
 
-    }).then(function(){
+}).then(() => {
 
-        fs.writeFile('./coinranking.json', crypto, function(err){
-            if (err) throw err
-            console.log('JSON file saved - Sending response')
-        })
-
-        new ObjectsToCsv(crypto).toDisk('./coinranking.csv', function(err){
-            if(err){
-                console.log('Error saving file')
-            }
-            else{
-                console.log('CSV File saved')
-            }
-        })
+    // Write JSON file
+    fs.writeFile('./coinranking.json', JSON.stringify(crypto), (err) => {
+        if (err) throw err
+        console.log('JSON file saved:' + __dirname + '/coinranking.json')
     })
-
 })
+// Optional: node cron ending bracket
+//})
