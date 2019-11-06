@@ -72,7 +72,7 @@ rp('https://coinmarketcap.com/', (error, html) => {
     console.log(name)
     
     // Load all objects into a Gainer or Loser array for example
-    /*
+    
     for(i=0;i<=fdataccid.length-1;i++){
 
       // Sparkline path construction
@@ -118,8 +118,7 @@ rp('https://coinmarketcap.com/', (error, html) => {
         // console.log("| --- Losers --- |: \n" + losers)
         // console.log("| --- Gainers --- |: \n" + gainers)
         console.log("BEAR")
-    }*/
-
+    }
   })
 
 }).then(() => {
