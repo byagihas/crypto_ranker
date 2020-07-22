@@ -18,7 +18,7 @@ const numberOfCoins = '100'
 // cron.schedule('* * * * *', () => {
 // Request top 100 Cryptocurrencies in the last seven days from Coinranking Public API
 rp(`https://api.coinranking.com/v1/public/coins?base=${fiatType}&timePeriod=${lookbackWindow}&limit=${numberOfCoins}`, (error, res) => {
-
+    
     if (error) throw error
     // Create responsebody and crypto objects to parse then store the cryptocurrency data
     let responsebody = JSON.parse(res.body)
@@ -26,7 +26,7 @@ rp(`https://api.coinranking.com/v1/public/coins?base=${fiatType}&timePeriod=${lo
     console.log('Data ingested')
 
 }).then(() => {
-
+    
     // Write JSON file
     fs.writeFile('./coinranking.json', JSON.stringify(crypto), (err) => {
         if (err) throw err

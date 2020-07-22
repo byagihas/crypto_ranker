@@ -1,22 +1,22 @@
 // DEPRECATED - Not kept up to date
 // Simple data scraper to pull top 100 crypto rankings into a JSON file
 // node cmcap.js
-const fs = require('fs')
-const request = require('request')
-const rp = require('request-promise')
-const cheerio = require('cheerio')
+const fs = require('fs');
+const request = require('request');
+const rp = require('request-promise');
+const cheerio = require('cheerio');
 
-let { promisify } = require('util')
-let writeFile = promisify(fs.writeFile)
+let { promisify } = require('util');
+let writeFile = promisify(fs.writeFile);
 
-let dayMood = ""
-let gainers = []
-let losers = []
-let cryptolist = []
+let dayMood = "";
+let gainers = [];
+let losers = [];
+let cryptolist = [];
 
 // Push headers into losers/gainers array
-losers.push("SYMBOL,PERCENTAGE")
-gainers.push("SYMBOL,PERCENTAGE")
+losers.push("SYMBOL,PERCENTAGE");
+gainers.push("SYMBOL,PERCENTAGE");
 
 rp('https://coinmarketcap.com/', (error, html) => {
 
@@ -50,7 +50,7 @@ rp('https://coinmarketcap.com/', (error, html) => {
     const marketcap = JSON.stringify($(this).find('.market-cap').contents().map(function(){
       return (this.type === 'text') ? $(this).text() + '': ''
     }).get().join('|'))
-    
+
     const name = JSON.stringify($(this).find('.currency-symbol > a').contents().map(function(){
       return (this.type === 'text') ? $(this).text() + '': '-'
     }).get().join('|'))
