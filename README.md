@@ -9,6 +9,8 @@ Todo:
 +Implement CLI functionality for Coinranking data request module
 +Implement additional parameters for Coinranking API request pull
 +Automate/add data viewer
++Create daily alert email for coins that have dropped or increase by 10 %
++Create Automated trader that buys in at decreases, sells at mass increase.
 
 Use:
 

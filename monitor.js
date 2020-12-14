@@ -2,45 +2,41 @@
 // Run: node monitor.js
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
+require('dotenv').config();
+
 const ccxt = require('ccxt');
+const fs = require('fs');
 
-(async function () {
+const getBalances = async () => {
+    let Balances = [];
     // CREATE BITTREX OBJECT
-    let bittrex = new ccxt.bittrex ({
-        apiKey: '',
-        secret: '',
-    })
+    const bittrex = new ccxt.bittrex ({
+        apiKey: process.env.BITTREX_API_KEY,
+        secret: process.env.BITTREX_SECRET
+    });
+    try {
+        //console.log (bittrex.id,  await bittrex.loadMarkets ())
+        //console.log (bittrex.id,  await bittrex.fetchOrderBook (bittrex.symbols[0]))
+        //let LINKUSD = await bittrex.fetchTicker ('LINK/USD');
+        const balance = await bittrex.fetchBalance();
+        const items = balance.info;
+        
+        for(let i=0;i<items.length;i++){
+            if(items[i].Balance >= 0.00001 && items[i].Currency != 'BTC' && items[i].Currency != 'BTXCRD'){
+                // console.log(items[i].Currency + ':' + items[i].Balance);
+                let priceObject = (await bittrex.fetchTicker(`${items[i].Currency}/BTC`));
+                Balances.push(priceObject);
+                //console.log(priceObject.symbol + '|' + items[i].Balance + '|' + priceObject.last + '|'
+                //+ priceObject.change + '|' + priceObject.percentage);
+            };
+        };
+        fs.writeFileSync(__dirname + '/balances.json', JSON.stringify(Balances));
+    } catch(error) {
+        const Error = new Error(error);
+        throw Error;
+    } finally {
+        return Balances;
+    };
+};
 
-    // CREATE BINANCE OBJECT
-    const exchangeId = 'binance'
-        , exchangeClass = ccxt[exchangeId]
-        , exchange = new exchangeClass ({
-            'apiKey': '',
-            'secret': '',
-            'timeout': 30000,
-            'enableRateLimit': true,
-        })
-
-    //console.log (bittrex.id,  await bittrex.loadMarkets ())
-   // console.log (bittrex.id,  await bittrex.fetchOrderBook (bittrex.symbols[0]))
-    let LINKUSD = await bittrex.fetchTicker ('LINK/USD');
-   // console.log (bittrex.id, await bittrex.fetchBalance ())
-    console.log(LINKUSD.last);
-
-    // sell 1 BTC/USD for market price, sell a bitcoin for dollars immediately
-   // console.log (okcoinusd.id, await okcoinusd.createMarketSellOrder ('BTC/USD', 1))
-
-
-    // buy 1 BTC/USD for $2500, you pay $2500 and receive ฿1 when the order is closed
-   // console.log (okcoinusd.id, await okcoinusd.createLimitBuyOrder ('BTC/USD', 1, 2500.00))
-
-    // pass/redefine custom exchange-specific order params: type, amount, price or whatever
-    // use a custom order type
-
-//  bitfinex.createLimitSellOrder ('BTC/USD', 1, 10, { 'type': 'trailing-stop' })
-
-    
-
-}) ();
+module.exports.getBalances = getBalances();
