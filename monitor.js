@@ -6,6 +6,7 @@ require('dotenv').config();
 
 const ccxt = require('ccxt');
 const fs = require('fs');
+const AppError = require('./error.js');
 
 const getBalances = async () => {
     let Balances = [];
@@ -32,8 +33,7 @@ const getBalances = async () => {
         };
         fs.writeFileSync(__dirname + '/balances.json', JSON.stringify(Balances));
     } catch(error) {
-        const Error = new Error(error);
-        throw Error;
+        throw new AppError(commonErrors.resourceNotFound, commonHTTPErrors.notFound, error, true)
     } finally {
         return Balances;
     };
