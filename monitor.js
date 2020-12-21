@@ -2,8 +2,7 @@
 // Run: node monitor.js
 'use strict';
 
-require('dotenv').config();
-
+const config = require('./config.js');
 const ccxt = require('ccxt');
 const fs = require('fs');
 const AppError = require('./error.js');
@@ -12,8 +11,8 @@ const getBalances = async () => {
     let Balances = [];
     // CREATE BITTREX OBJECT
     const bittrex = new ccxt.bittrex ({
-        apiKey: process.env.BITTREX_API_KEY,
-        secret: process.env.BITTREX_SECRET
+        apiKey: config.get('btx_api_key'),
+        secret: config.get('btx_api_secret')
     });
     try {
         //console.log (bittrex.id,  await bittrex.loadMarkets ())
@@ -27,8 +26,8 @@ const getBalances = async () => {
                 // console.log(items[i].Currency + ':' + items[i].Balance);
                 let priceObject = (await bittrex.fetchTicker(`${items[i].Currency}/BTC`));
                 Balances.push(priceObject);
-                //console.log(priceObject.symbol + '|' + items[i].Balance + '|' + priceObject.last + '|'
-                //+ priceObject.change + '|' + priceObject.percentage);
+                console.log(priceObject.symbol + '|' + items[i].Balance + '|' + priceObject.last + '|'
+                + priceObject.change + '|' + priceObject.percentage);
             };
         };
         fs.writeFileSync(__dirname + '/balances.json', JSON.stringify(Balances));

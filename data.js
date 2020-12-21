@@ -24,7 +24,6 @@ rp(`https://api.coinranking.com/v1/public/coins?base=${fiatType}&timePeriod=${lo
     crypto = responsebody.data.coins;
     console.log('Data ingested');
 }).then(() => {
-    
     // Write JSON file
     fs.writeFile('./coinranking.json', JSON.stringify(crypto), (err) => {
         if (err) throw err;

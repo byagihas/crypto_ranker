@@ -11,7 +11,8 @@ const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const rp = require('request-promise');
 const encoding_f = require('encoding');
-const Routes = require('./routes.js')
+const Routes = require('./routes.js');
+const config = require('./config.js');
 const app = express();
 
 app.enable('trust proxy'); // Enable for reverse proxy
@@ -48,4 +49,4 @@ app.use('/media', express.static(__dirname + '/media'));
 // ./routes.js
 app.use(Routes);
 
-app.listen(process.env.PORT, 'localhost', () => console.log(`Server running on port ${process.env.PORT}`));
+app.listen(config.get('port'), config.get('ip'), () => console.log(`Server running on port ${process.env.PORT}`));
