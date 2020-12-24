@@ -48,4 +48,10 @@ app.use('/media', express.static(__dirname + '/media'));
 // ./routes.js
 app.use(Routes);
 
-app.listen(process.env.PORT, process.env.IP, () => console.log(`Server running on port ${process.env.PORT}`));
+app.listen(process.env.PORT, process.env.IP, () => { 
+    try{
+        console.log(`Server running on port ${process.env.PORT}`);
+    } catch(err) {
+        throw new AppError(err,'App listener error', '404', 'Issue with App listener', false);
+    };
+})

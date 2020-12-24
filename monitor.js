@@ -34,7 +34,7 @@ const getBalances = async () => {
         fs.writeFileSync(__dirname + '/balances.json', JSON.stringify(Balances));
         return Balances;
     } catch(error) {
-        throw new Error(error);
+        throw new AppError(err, 'Balance Error', '404', 'Issue with getBalances', false);
     };
 };
 

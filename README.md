@@ -12,7 +12,7 @@ Todo:
 +Create daily alert email for coins that have dropped or increase by 10 %
 +Create Automated trader that buys in at decreases, sells at mass increase.
 
-Use:
+Use: 
 
 > npm install
 
