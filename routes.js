@@ -2,6 +2,7 @@ const Router = require('express-promise-router');
 const ejs = require('ejs');
 
 const Monitor = require('./monitor.js');
+const Analyze = require('./analyze.js');
 
 //const db = require('./testdb.js');
 // create a new express-promise-router
@@ -22,9 +23,23 @@ app.get('/', (req, res) => {
 });
 
 app.get('/balances', (req, res) => {
-    Monitor.getBalances.then((data) => {
+    Monitor.getBalances().then((data) => {
         res.send(data);
         res.end();
+    });
+});
+
+app.get('/buycurrencies', (req, res) => {
+  Analyze.getBuyCurrencies().then((data) => {
+    res.send(data);
+    res.end();
+  });
+});
+
+app.get('/sellcurrencies', (req, res) => {
+    Analyze.getSellCurrencies().then((data) => {
+      res.send(data);
+      res.end();
     });
 });
 

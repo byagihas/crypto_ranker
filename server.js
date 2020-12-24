@@ -12,7 +12,6 @@ const rateLimit = require('express-rate-limit');
 const rp = require('request-promise');
 const encoding_f = require('encoding');
 const Routes = require('./routes.js');
-const config = require('./config.js');
 const app = express();
 
 app.enable('trust proxy'); // Enable for reverse proxy

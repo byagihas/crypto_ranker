@@ -2,15 +2,12 @@
 
 const Monitor = require('./monitor.js');
 
-const getHighDeltaCurrencies = async (arr) => {
-    const gainers = [];
+const getBuyCurrencies = async () => {
     const losers = [];
     try {
-        Monitor.getBalances().then((data) => {
+        return Monitor.getBalances().then((data) => {
             for(let i=0;i<data.length;i++){
-                if(parseInt(data[i].percentage) >= 10) {
-                    gainers.push(data[i]);
-                } else if(parseInt(data[i].percentage) < -10) {
+                if(parseInt(data[i].percentage) < -5) {
                     losers.push(data[i]);
                 };
             };
@@ -21,4 +18,21 @@ const getHighDeltaCurrencies = async (arr) => {
     };
 };
 
-module.exports = getHighDeltaCurrencies();
+const getSellCurrencies = async () => {
+    const gainers = [];
+    try {
+        return Monitor.getBalances().then((data) => {
+            for(let i=0;i<data.length;i++){
+                if(parseInt(data[i].percentage) >= 5) {
+                    gainers.push(data[i]);
+                };
+            };
+            return gainers;
+        });
+    } catch(err) {
+        throw new Error(err);
+    };
+};
+
+module.exports.getBuyCurrencies = getBuyCurrencies;
+module.exports.getSellCurrencies = getSellCurrencies;
