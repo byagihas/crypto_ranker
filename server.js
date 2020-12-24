@@ -49,4 +49,4 @@ app.use('/media', express.static(__dirname + '/media'));
 // ./routes.js
 app.use(Routes);
 
-app.listen(config.get('port'), config.get('ip'), () => console.log(`Server running on port ${process.env.PORT}`));
+app.listen(process.env.PORT, process.env.IP, () => console.log(`Server running on port ${process.env.PORT}`));
