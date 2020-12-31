@@ -3,15 +3,15 @@
 const Monitor = require('./monitor.js');
 const AppError = require('./error.js');
 
-const BUYLEVEL = -9;
-const SELLLEVEL = 8;
+const BUY_LEVEL = -9;
+const SELL_LEVEL = 8;
 
 const getBuyCurrencies = async () => {
     const losers = [];
     try {
         return Monitor.getBalances().then((data) => {
             for(let i=0;i<data.length;i++){
-                if(parseInt(data[i].percentage) < BUYLEVEL) {
+                if(parseInt(data[i].percentage) < BUY_LEVEL) {
                     losers.push(data[i]);
                 };
             };
@@ -27,7 +27,7 @@ const getSellCurrencies = async () => {
     try {
         return Monitor.getBalances().then((data) => {
             for(let i=0;i<data.length;i++){
-                if(parseInt(data[i].percentage) >= SELLLEVEL) {
+                if(parseInt(data[i].percentage) >= SELL_LEVEL) {
                     gainers.push(data[i]);
                 };
             };

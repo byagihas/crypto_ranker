@@ -38,7 +38,7 @@ app.get('/balances', (req, res) => {
     };
 });
 
-app.get('/buycurrencies', (req, res, err) => {
+app.get('/buyit', (req, res, err) => {
     try {
         Analyze.getBuyCurrencies().then((data) => {
             res.send(data);
@@ -49,11 +49,11 @@ app.get('/buycurrencies', (req, res, err) => {
     };
 });
 
-app.get('/sellcurrencies', (req, res) => {
+app.get('/sellit', (req, res) => {
     try {
         Analyze.getSellCurrencies().then((data) => {
-        res.send(data);
-        res.end();
+            res.send(data);
+            res.end();
         });
     } catch(err) {
         throw new AppError(err,'/sellcurrencies Error', '404', 'Issue with /sellcurrencies route', false);

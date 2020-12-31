@@ -11,4 +11,4 @@ function AppError(name, httpCode, description, isOperational) {
 AppError.prototype = Object.create(Error.prototype);
 AppError.prototype.constructor = AppError;
 
-module.exports.AppError = AppError;
+module.exports = AppError;
