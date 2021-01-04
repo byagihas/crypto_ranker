@@ -7,7 +7,7 @@ require('dotenv').config();
 const AppError = require('./error.js');
 const APIConnect = require('./api_conn.js');
 
-const getBalances = async () => {
+const getBalances = async (currency) => {
     let Balances = [];
     try {
         //console.log (bittrex.id,  await bittrex.loadMarkets ())
@@ -15,14 +15,25 @@ const getBalances = async () => {
         //let LINKUSD = await bittrex.fetchTicker ('LINK/USD');
         const bittrex = await APIConnect.Connect('bittrex');
         const balance = await bittrex.fetchBalance();
-        const items = balance.info;
-        for(let i=0;i<items.length;i++){
-            if(items[i].Balance >= 0.00001 && items[i].Currency != 'BTC' && items[i].Currency != 'BTXCRD'){
-                let priceObject = (await bittrex.fetchTicker(`${items[i].Currency}/BTC`));
-                Balances.push(priceObject);
+        if(currency != null){
+            const bittrex = await APIConnect.Connect('bittrex');
+            const balance = await bittrex.fetchBalance();
+            return (await bittrex.fetchTicker(`${currency}/BTC`));
+        } else {
+            const items = balance.info;
+            for(let i=0;i<items.length;i++){
+                if(items[i].Balance >= 0.00001 && items[i].Currency != 'BTC' && items[i].Currency != 'BTXCRD'){
+                    let priceObject = (await bittrex.fetchTicker(`${items[i].Currency}/BTC`));
+                    Balances.push(priceObject);
+                };
             };
-        };
-        return Balances;
+            if(Balances.length > 0){
+                return Balances;
+            } else {
+                return 'Invalid currency';
+            };
+        }
+        
     } catch(error) {
         throw new AppError(error, 'Balance Error', '404', 'Issue with getBalances', false);
     };
