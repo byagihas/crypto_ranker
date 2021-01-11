@@ -22,7 +22,7 @@ const getBalances = async (currency) => {
         } else {
             const items = balance.info;
             for(let i=0;i<items.length;i++){
-                if(items[i].Balance >= 0.00001 && items[i].Currency != 'BTC' && items[i].Currency != 'BTXCRD'){
+                if(items[i].Balance >= 0.00001 && items[i].Currency != 'BTC' && items[i].Currency != 'BTXCRD' && items[i].Currency != 'USDT'){
                     let priceObject = (await bittrex.fetchTicker(`${items[i].Currency}/BTC`));
                     Balances.push(priceObject);
                 };

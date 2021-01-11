@@ -3,15 +3,18 @@
 const AppError = require('./error.js');
 const APIConnect = require('./api_conn.js');
 const Monitor = require('./monitor.js');
-
+const Analyze = require('./Analyze.js');
 class Algorithm {
     constructor(currency, amount){
         this.currency = currency;
         this.amount = amount;
+        this.active = false;
         this.boughtPrice = null;
         this.sellPrice = null;
         this.targetPrice = null;
         this.change = null;
+        this.profit = null;
+        this.sellIndicator = false;
     }
     async buyPosition(currency, amount){
         const bittrex = await APIConnect.Connect('bittrex');
@@ -19,6 +22,7 @@ class Algorithm {
             console.log(data);
             bittrex.createLimitBuyOrder (currency, amount, data.last);
             this.boughtPrice = data.last;
+            this.active = true;
             return 'Order placed';
         });
     };
@@ -28,8 +32,26 @@ class Algorithm {
             console.log(data);
             bittrex.createLimitSellOrder (this.currency, this.amount, data.last);
             this.soldPrice = data.last;
+            this.active = false;
             return 'Order placed';
         });
+    };
+    analyze(){
+        Analyze.getSellCurrencies().then((data) => {
+            for(let i=0;i<data.length;i++){
+                if((this.currency + '/BTC') == data[i].symbol){
+                    console.log('Sell indicator: ' + data[i].symbol + '\nChange: ' + data[i].percentage + ' %'
+                    + '\nPrice: ' + data[i].last + ' BTC');
+                    this.sellIndicator = true;
+                };
+            };
+        });
+    };
+    start(){
+        console.log('Trading algo for ' + this.currency + ' initialized');
+    };
+    end(){
+        console.log('Trading algo for ' + this.currency + ' stopped');
     };
 };
 
@@ -58,8 +80,9 @@ const sellPosition = async (currency, amount) => {
 //buyPosition('LINK/BTC', 1);
 //sellPosition('LINK/BTC', 1);
 //let trade = new Algorithm('LINK', 10);
+//console.log(trade.analyze());
 //console.log(trade);
 
 module.exports.buyPosition = buyPosition;
 module.exports.sellPosition = sellPosition;
-module.exports.algorithm = Algorithm;
+module.exports.Algorithm = Algorithm;

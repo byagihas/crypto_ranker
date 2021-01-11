@@ -3,8 +3,8 @@
 const Monitor = require('./monitor.js');
 const AppError = require('./error.js');
 
-const BUY_LEVEL = -9;
-const SELL_LEVEL = 8;
+const BUY_LEVEL = -7;
+const SELL_LEVEL = 20;
 
 const getBuyCurrencies = async () => {
     const losers = [];

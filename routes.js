@@ -3,6 +3,7 @@ const ejs = require('ejs');
 
 const Monitor = require('./monitor.js');
 const Analyze = require('./analyze.js');
+const { Algorithm } = require('./algo.js');
 const { AppError } = require('./error.js');
 
 //const db = require('./testdb.js');
@@ -57,6 +58,15 @@ app.get('/sellit', (req, res) => {
         });
     } catch(err) {
         throw new AppError(err,'/sellcurrencies Error', '404', 'Issue with /sellcurrencies route', false);
+    };
+});
+
+app.get('/algo', (req, res) => {
+    try {
+        let test = new Algorithm('LINK', 10);
+        res.send(test);
+    } catch(err) {
+        throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
     };
 });
 
