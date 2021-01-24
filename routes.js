@@ -4,7 +4,7 @@ const ejs = require('ejs');
 const Monitor = require('./monitor.js');
 const Analyze = require('./analyze.js');
 const { Algorithm } = require('./algo.js');
-const { AppError } = require('./error.js');
+const AppError = require('./error.js');
 
 //const db = require('./testdb.js');
 // create a new express-promise-router
@@ -19,7 +19,7 @@ let home_html = '<!doctype html><html lang="en">' +
 
 // Start Routes
 
-app.get('/', (req, res) => {
+app.get('/', (req, res, err) => {
     try {
         res.send(home_html);
         res.end();
@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
     };
 });
 
-app.get('/balances', (req, res) => {
+app.get('/balances', (req, res, err) => {
     try {
         Monitor.getBalances().then((data) => {
             res.send(data);
@@ -50,7 +50,7 @@ app.get('/buyit', (req, res, err) => {
     };
 });
 
-app.get('/sellit', (req, res) => {
+app.get('/sellit', (req, res, err) => {
     try {
         Analyze.getSellCurrencies().then((data) => {
             res.send(data);
@@ -61,12 +61,12 @@ app.get('/sellit', (req, res) => {
     };
 });
 
-app.get('/algo', (req, res) => {
+app.get('/algo', (req, res, err) => {
     try {
-        let test = new Algorithm('LINK', 10);
-        res.send(test);
+        const test = new Algorithm('LINK', 10);
+        res.send(test.analyze());
     } catch(err) {
-        throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
+        throw new AppError(err,'Algo Error', '404', 'Issue with /algo route', false);
     };
 });
 

@@ -27,17 +27,21 @@ class Algorithm {
         });
     };
     async sellposition(){
-        const bittrex = await APIConnect.Connect('bittrex');
-        return Monitor.getBalances(`${this.currency}`).then((data) => { 
-            console.log(data);
-            bittrex.createLimitSellOrder (this.currency, this.amount, data.last);
-            this.soldPrice = data.last;
-            this.active = false;
-            return 'Order placed';
-        });
+        if(this.active = true) {
+            const bittrex = await APIConnect.Connect('bittrex');
+            return Monitor.getBalances(`${this.currency}`).then((data) => { 
+                console.log(data);
+                bittrex.createLimitSellOrder (this.currency, this.amount, data.last);
+                this.soldPrice = data.last;
+                this.active = false;
+                return 'Order placed';
+            });
+        } else {
+            console.log('No active trade');
+        };
     };
-    analyze(){
-        Analyze.getSellCurrencies().then((data) => {
+    async analyze(){
+        return Analyze.getSellCurrencies().then((data) => {
             for(let i=0;i<data.length;i++){
                 if((this.currency + '/BTC') == data[i].symbol){
                     console.log('Sell indicator: ' + data[i].symbol + '\nChange: ' + data[i].percentage + ' %'
