@@ -3,7 +3,7 @@ const ejs = require('ejs');
 
 const Monitor = require('./monitor.js');
 const Analyze = require('./analyze.js');
-const { Algorithm } = require('./algo.js');
+const Algorithm = require('./algo.js');
 const AppError = require('./error.js');
 
 //const db = require('./testdb.js');
@@ -64,7 +64,10 @@ app.get('/sellit', (req, res, err) => {
 app.get('/algo', (req, res, err) => {
     try {
         const test = new Algorithm('LINK', 10);
-        res.send(test.analyze());
+        test.getBalances().then((data)=> {
+            res.send(data);
+        }); 
+        
     } catch(err) {
         throw new AppError(err,'Algo Error', '404', 'Issue with /algo route', false);
     };

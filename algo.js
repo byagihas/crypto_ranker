@@ -13,9 +13,9 @@ class Algorithm {
         this.sellPrice = null;
         this.targetPrice = null;
         this.change = null;
-        this.profit = null;
+        this.profit = 0;
         this.sellIndicator = false;
-    }
+    };
     async buyPosition(currency, amount){
         const bittrex = await APIConnect.Connect('bittrex');
         return Monitor.getBalances(`${currency}`).then((data) => { 
@@ -40,6 +40,12 @@ class Algorithm {
             console.log('No active trade');
         };
     };
+    async getBalances(){
+        return Monitor.getBalances().then((data) => {
+            console.log(data);
+            return data;
+        });
+    };
     async analyze(){
         return Analyze.getSellCurrencies().then((data) => {
             for(let i=0;i<data.length;i++){
@@ -47,8 +53,10 @@ class Algorithm {
                     console.log('Sell indicator: ' + data[i].symbol + '\nChange: ' + data[i].percentage + ' %'
                     + '\nPrice: ' + data[i].last + ' BTC');
                     this.sellIndicator = true;
+                    return this.sellIndicator;
                 };
             };
+            
         });
     };
     start(){
@@ -89,4 +97,4 @@ const sellPosition = async (currency, amount) => {
 
 module.exports.buyPosition = buyPosition;
 module.exports.sellPosition = sellPosition;
-module.exports.Algorithm = Algorithm;
+module.exports = Algorithm;

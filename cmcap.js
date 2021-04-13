@@ -124,9 +124,7 @@ rp('https://coinmarketcap.com/', (error, html) => {
 }).then(() => {
   // Write JSON file
   if(cryptolist.length = '0'){ console.log("File empty"); throw error }
-
   writeFile('./cryptodata.json', JSON.stringify(cryptolist))
     .then(() => console.log('File successfully created'))
     .catch((error) => console.log(`Error creating file: ${error}`))
-
-})
+});
