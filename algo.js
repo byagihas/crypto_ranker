@@ -49,6 +49,7 @@ class Algorithm {
     async analyze(){
         return Analyze.getSellCurrencies().then((data) => {
             for(let i=0;i<data.length;i++){
+                console.log(this.currency)
                 if((this.currency + '/BTC') == data[i].symbol){
                     console.log('Sell indicator: ' + data[i].symbol + '\nChange: ' + data[i].percentage + ' %'
                     + '\nPrice: ' + data[i].last + ' BTC');
