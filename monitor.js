@@ -17,16 +17,10 @@ const getBalances = async (currency) => {
         const balance = await bittrex.fetchBalance();
         if(currency != null){
             const bittrex = await APIConnect.Connect('bittrex');
-            const balance = await bittrex.fetchBalance();
-            return (await bittrex.fetchTicker(`${currency}/BTC`));
+            return (await bittrex.fetchTicker(`${currency}`));
         } else {
             const items = balance.info;
-            for(let i=0;i<items.length;i++){
-                if(items[i].Balance >= 0.00001 && items[i].Currency != 'BTC' && items[i].Currency != 'BTXCRD' && items[i].Currency != 'USDT'){
-                    let priceObject = (await bittrex.fetchTicker(`${items[i].Currency}/BTC`));
-                    Balances.push(priceObject);
-                };
-            };
+            Balances.push(items);
             if(Balances.length > 0){
                 return Balances;
             } else {
@@ -39,4 +33,15 @@ const getBalances = async (currency) => {
     };
 };
 
+// Get Tether indicator/price for predictions
+const getTetherIndicator = async () => {
+    try {
+        const bittrex = await APIConnect.Connect('bittrex');
+        const tether = await bittrex.fetchTicker('USDT/USD');
+        return tether;
+    } catch(error){
+        throw new AppError(error, 'Balance Error', '404', 'Issue with getBalances', false);
+    };
+};
 module.exports.getBalances = getBalances;
+module.exports.getTetherIndicator = getTetherIndicator;

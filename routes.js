@@ -21,14 +21,14 @@ let home_html = '<!doctype html><html lang="en">' +
 
 app.get('/', (req, res, err) => {
     try {
-        res.send(home_html);
+        res.send('index');
         res.end();
     } catch(err) {
         throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
     };
 });
 
-app.get('/balances', (req, res, err) => {
+app.get('/monitor', (req, res, err) => {
     try {
         Monitor.getBalances().then((data) => {
             res.send(data);
@@ -36,6 +36,17 @@ app.get('/balances', (req, res, err) => {
         });
     } catch(err) {
         throw new AppError(err,'/balances Error', '404', 'Issue with /balances route', false);
+    };
+});
+
+app.get('/tether', (req, res, err) => {
+    try {
+        Monitor.getTetherIndicator().then((data) => {
+            res.send(data);
+            res.end();
+        });
+    } catch(err) {
+        throw new AppError(err,'/tether Error', '404', 'Issue with /tether route', false);
     };
 });
 
