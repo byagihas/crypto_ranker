@@ -17,7 +17,7 @@ const numberOfCoins = '100';
 // Optional: use node-cron to automate request every minute
 // cron.schedule('* * * * *', () => {
 // Request top 100 Cryptocurrencies in the last seven days from Coinranking Public API
-rp(`https://api.coinranking.com/v1/public/coins?base=${fiatType}&timePeriod=${lookbackWindow}&limit=${numberOfCoins}`, (error, res) => {
+rp(`https://api.coinranking.com/v2?base=${fiatType}&timePeriod=${lookbackWindow}&limit=${numberOfCoins}`, (error, res) => {
     if (error) throw error
     // Create responsebody and crypto objects to parse then store the cryptocurrency data
     let responsebody = JSON.parse(res.body);

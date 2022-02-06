@@ -6,12 +6,27 @@ require('dotenv').config();
 
 const AppError = require('./error.js');
 const APIConnect = require('./api_conn.js');
+const fs = require('fs');
+
+const getPrice = async (currency) => {
+    const bittrex = await APIConnect.Connect('bittrex');
+    var ticker = await bittrex.fetchTicker(currency);
+    //fs.writeFileSync('./coins.json', JSON.stringify(currencies));
+    return ticker;
+};
+
+const getPrices = async () => {
+    const bittrex = await APIConnect.Connect('bittrex');
+    var tickers = await bittrex.fetchTickers();
+    fs.writeFileSync('./coins.json', JSON.stringify(tickers));
+    return tickers;
+};
 
 const getBalances = async (currency) => {
     let Balances = [];
     try {
         //console.log (bittrex.id,  await bittrex.loadMarkets ())
-        //console.log (bittrex.id,  await bittrex.fetchOrderBook (bittrex.symbols[0]))
+        
         //let LINKUSD = await bittrex.fetchTicker ('LINK/USD');
         const bittrex = await APIConnect.Connect('bittrex');
         const balance = await bittrex.fetchBalance();
@@ -45,3 +60,5 @@ const getTetherIndicator = async () => {
 };
 module.exports.getBalances = getBalances;
 module.exports.getTetherIndicator = getTetherIndicator;
+module.exports.getPrice = getPrice;
+module.exports.getPrices = getPrices;

@@ -1,5 +1,8 @@
+'use strict';
+
 const Router = require('express-promise-router');
 const ejs = require('ejs');
+const fs = require('fs');
 
 const Monitor = require('./monitor.js');
 const Analyze = require('./analyze.js');
@@ -18,11 +21,25 @@ let home_html = '<!doctype html><html lang="en">' +
 '<body><div>CryptoMon</div><br/><div id=\'nav\'><a href=\'/balances\'>Balances</a></body></html>';
 
 // Start Routes
-
 app.get('/', (req, res, err) => {
     try {
-        res.send('index');
-        res.end();
+        Monitor.getPrices().then((data) => {
+            res.render('index', { 'crypto': data });
+            res.end();
+        });
+       // var file = fs.readFileSync('./coins.json');
+    } catch(err) {
+        throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
+    };
+});
+
+app.get('/:currency', (req, res, err) => {
+    const currency = JSON.stringify(req.params.currency).replace('-','/').toUpperCase();
+    try {
+        Monitor.getPrice(currency).then((data) => {
+            res.render('index', { 'crypto': data });
+            res.end();
+        });
     } catch(err) {
         throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
     };

@@ -22,7 +22,27 @@
 <body>
 
     <div>
-        <a href='/monitor'>Get Top 100 Cryptos in JSON</a>
+        <table class="table table-inverse">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Name</th>
+                <th>Bid</th>
+                <th>Ask</th>
+              </tr>
+            </thead>
+          
+            <tbody>
+              <% Object.keys(crypto).map((key, i) => { %>
+              <tr>
+                <td><%= i %></td>
+                <td><%= key %></td>
+                <td><%= crypto[key].bid %></td>
+                <td><%= crypto[key].ask %></td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
     </div>
 
 <script src="js/vendor/modernizr-3.6.0.min.js"></script>
