@@ -8,18 +8,22 @@ const AppError = require('./error.js');
 const APIConnect = require('./api_conn.js');
 const fs = require('fs');
 
+const getMarkets = async (currency) => {
+    const bittrex = await APIConnect.Connect('bittrex');
+    let markets = await bittrex.loadMarkets();
+    return markets;
+};
+
 const getPrice = async (currency) => {
     if(currency.length > 4){
         const bittrex = await APIConnect.Connect('bittrex');
         console.log(currency);
         let formattedCurrency = currency.replace('-','/').toUpperCase();
         let ticker = await bittrex.fetchTicker(formattedCurrency);
-        //fs.writeFileSync('./coins.json', JSON.stringify(currencies));
         return ticker;
     } else {
         return "Invalid Symbol, needs to be greater than 4 characters";
-    }
-    
+    };
 };
 
 const getPrices = async () => {
@@ -32,9 +36,6 @@ const getPrices = async () => {
 const getBalances = async (currency) => {
     let Balances = [];
     try {
-        //console.log (bittrex.id,  await bittrex.loadMarkets ())
-        
-        //let LINKUSD = await bittrex.fetchTicker ('LINK/USD');
         const bittrex = await APIConnect.Connect('bittrex');
         const balance = await bittrex.fetchBalance();
         if(currency != null){
@@ -48,8 +49,7 @@ const getBalances = async (currency) => {
             } else {
                 return 'Invalid currency';
             };
-        }
-        
+        };
     } catch(error) {
         throw new AppError(error, 'Balance Error', '404', 'Issue with getBalances', false);
     };
@@ -69,3 +69,4 @@ module.exports.getBalances = getBalances;
 module.exports.getTetherIndicator = getTetherIndicator;
 module.exports.getPrice = getPrice;
 module.exports.getPrices = getPrices;
+module.exports.getMarkets = getMarkets;

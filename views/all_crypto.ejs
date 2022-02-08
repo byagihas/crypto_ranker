@@ -29,6 +29,7 @@
                 <th>Name</th>
                 <th>Bid</th>
                 <th>Ask</th>
+                <th>Last</th>
               </tr>
             </thead>
           
@@ -39,6 +40,7 @@
                 <td><%= key %></td>
                 <td><%= crypto[key].bid %></td>
                 <td><%= crypto[key].ask %></td>
+                <td><%= crypto[key].last %></td>
               </tr>
               <% }) %>
             </tbody>

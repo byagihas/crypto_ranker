@@ -15,16 +15,11 @@ const AppError = require('./error.js');
 // it allows you to use async functions as route handlers
 const app = new Router();
 
-let home_html = '<!doctype html><html lang="en">' + 
-'<head><meta charset="utf-8"><title>CryptoMon</title><meta name="description" content="CryptoMon">' + 
-'<meta name="author" content="CryptoMon"></head>' + 
-'<body><div>CryptoMon</div><br/><div id=\'nav\'><a href=\'/balances\'>Balances</a></body></html>';
-
 // Start Routes
 app.get('/', (req, res, err) => {
     try {
         Monitor.getPrices().then((data) => {
-            res.render('all_crypto', { 'crypto': data });
+            res.send(data);
             res.end();
         });
        // var file = fs.readFileSync('./coins.json');
@@ -33,15 +28,26 @@ app.get('/', (req, res, err) => {
     };
 });
 
-app.get('/:currency', (req, res, err) => {
+app.get('/currencies/:currency', (req, res, err) => {
     let currency = req.params.currency;
     try {
         Monitor.getPrice(currency).then((data) => {
-            res.render('singular_crypto', { 'crypto': data });
+            res.send(data)
             res.end();
         });
     } catch(err) {
         throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
+    };
+});
+
+app.get('/markets', (req, res, err) => {
+    try {
+        Monitor.getMarkets().then((data) => {
+            res.send(data);
+            res.end();
+        });
+    } catch(err) {
+        throw new AppError(err,'/markets Error', '404', 'Issue with /markets route', false);
     };
 });
 
