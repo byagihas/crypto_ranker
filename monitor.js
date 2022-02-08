@@ -9,15 +9,22 @@ const APIConnect = require('./api_conn.js');
 const fs = require('fs');
 
 const getPrice = async (currency) => {
-    const bittrex = await APIConnect.Connect('bittrex');
-    var ticker = await bittrex.fetchTicker(currency);
-    //fs.writeFileSync('./coins.json', JSON.stringify(currencies));
-    return ticker;
+    if(currency.length > 4){
+        const bittrex = await APIConnect.Connect('bittrex');
+        console.log(currency);
+        let formattedCurrency = currency.replace('-','/').toUpperCase();
+        let ticker = await bittrex.fetchTicker(formattedCurrency);
+        //fs.writeFileSync('./coins.json', JSON.stringify(currencies));
+        return ticker;
+    } else {
+        return "Invalid Symbol, needs to be greater than 4 characters";
+    }
+    
 };
 
 const getPrices = async () => {
     const bittrex = await APIConnect.Connect('bittrex');
-    var tickers = await bittrex.fetchTickers();
+    let tickers = await bittrex.fetchTickers();
     fs.writeFileSync('./coins.json', JSON.stringify(tickers));
     return tickers;
 };

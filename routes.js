@@ -24,7 +24,7 @@ let home_html = '<!doctype html><html lang="en">' +
 app.get('/', (req, res, err) => {
     try {
         Monitor.getPrices().then((data) => {
-            res.render('index', { 'crypto': data });
+            res.render('all_crypto', { 'crypto': data });
             res.end();
         });
        // var file = fs.readFileSync('./coins.json');
@@ -34,10 +34,10 @@ app.get('/', (req, res, err) => {
 });
 
 app.get('/:currency', (req, res, err) => {
-    const currency = JSON.stringify(req.params.currency).replace('-','/').toUpperCase();
+    let currency = req.params.currency;
     try {
         Monitor.getPrice(currency).then((data) => {
-            res.render('index', { 'crypto': data });
+            res.render('singular_crypto', { 'crypto': data });
             res.end();
         });
     } catch(err) {
