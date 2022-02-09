@@ -35,7 +35,7 @@ app.get('/currencies', (req, res, err) => {
         });
        // var file = fs.readFileSync('./coins.json');
     } catch(err) {
-        throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
+        throw new AppError(err,'/currencies Error', '404', 'Issue with /currencies route', false);
     };
 });
 
@@ -47,7 +47,7 @@ app.get('/currencies/:currency', (req, res, err) => {
             res.end();
         });
     } catch(err) {
-        throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
+        throw new AppError(err,'/currencies/:currency Error', '404', 'Issue with /currencies/:currency route', false);
     };
 });
 
@@ -69,7 +69,7 @@ app.get('/monitor', (req, res, err) => {
             res.end();
         });
     } catch(err) {
-        throw new AppError(err,'/balances Error', '404', 'Issue with /balances route', false);
+        throw new AppError(err,'/monitor Error', '404', 'Issue with /monitor route', false);
     };
 });
 
@@ -91,7 +91,7 @@ app.get('/buyit', (req, res, err) => {
             res.end();
         });
     } catch(err) {
-        throw new AppError(err, '/buycurrencies Error', '404', 'Issue with /buycurrencies route', false);
+        throw new AppError(err, '/buyit Error', '404', 'Issue with /buyit route', false);
     };
 });
 
@@ -102,16 +102,14 @@ app.get('/sellit', (req, res, err) => {
             res.end();
         });
     } catch(err) {
-        throw new AppError(err,'/sellcurrencies Error', '404', 'Issue with /sellcurrencies route', false);
+        throw new AppError(err,'/sellit Error', '404', 'Issue with /sellit route', false);
     };
 });
 
 app.get('/algo', (req, res, err) => {
     try {
-        const test = new Algorithm('LINK', 10);
-        test.getBalances().then((data)=> {
-            res.send(data);
-        });
+        res.send('Under construction');
+        res.end();
     } catch(err) {
         throw new AppError(err,'Algo Error', '404', 'Issue with /algo route', false);
     };

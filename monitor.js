@@ -8,29 +8,39 @@ const AppError = require('./error.js');
 const APIConnect = require('./api_conn.js');
 const fs = require('fs');
 
-const getMarkets = async (currency) => {
-    const bittrex = await APIConnect.Connect('bittrex');
-    let markets = await bittrex.loadMarkets();
-    return markets;
+const getMarkets = async () => {
+    try{
+        const bittrex = await APIConnect.Connect('bittrex');
+        let markets = await bittrex.loadMarkets();
+        return markets;
+    } catch(error) {
+        throw new AppError(error, 'getMarkets Error', '404', 'Issue with getMarkets', false);
+    };
 };
 
 const getPrice = async (currency) => {
-    if(currency.length > 4){
-        const bittrex = await APIConnect.Connect('bittrex');
-        console.log(currency);
-        let formattedCurrency = currency.replace('-','/').toUpperCase();
-        let ticker = await bittrex.fetchTicker(formattedCurrency);
-        return ticker;
-    } else {
-        return "Invalid Symbol, needs to be greater than 4 characters";
+    try {
+        if(currency.length > 4){
+            const bittrex = await APIConnect.Connect('bittrex');
+            let formattedCurrency = currency.replace('-','/').toUpperCase();
+            let ticker = await bittrex.fetchTicker(formattedCurrency);
+            return ticker;
+        } else {
+            return "Invalid Symbol, needs to be greater than 4 characters";
+        };
+    } catch(error) {
+        throw new AppError(error, 'getPrice Error', '404', 'Issue with getPrice', false);
     };
 };
 
 const getPrices = async () => {
-    const bittrex = await APIConnect.Connect('bittrex');
-    let tickers = await bittrex.fetchTickers();
-    fs.writeFileSync('./coins.json', JSON.stringify(tickers));
-    return tickers;
+    try{
+        const bittrex = await APIConnect.Connect('bittrex');
+        let tickers = await bittrex.fetchTickers();
+        return tickers;
+    } catch(error) {
+        throw new AppError(error, 'getPrices error', '404', 'Issue with getPrices', false);
+    };
 };
 
 const getBalances = async (currency) => {
@@ -51,7 +61,7 @@ const getBalances = async (currency) => {
             };
         };
     } catch(error) {
-        throw new AppError(error, 'Balance Error', '404', 'Issue with getBalances', false);
+        throw new AppError(error, 'getBalances Error', '404', 'Issue with getBalances', false);
     };
 };
 
@@ -62,11 +72,12 @@ const getTetherIndicator = async () => {
         const tether = await bittrex.fetchTicker('USDT/USD');
         return tether;
     } catch(error){
-        throw new AppError(error, 'Balance Error', '404', 'Issue with getBalances', false);
+        throw new AppError(error, 'getTetherIndicator Error', '404', 'Issue with getTetherIndicator', false);
     };
 };
-module.exports.getBalances = getBalances;
-module.exports.getTetherIndicator = getTetherIndicator;
+
 module.exports.getPrice = getPrice;
 module.exports.getPrices = getPrices;
 module.exports.getMarkets = getMarkets;
+module.exports.getBalances = getBalances;
+module.exports.getTetherIndicator = getTetherIndicator;

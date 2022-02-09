@@ -13,6 +13,7 @@ Todo:
 +Create Automated trader that buys in at decreases, sells at mass increase.
 
 Use: 
+a .env file is required with BITTREX_API_KEY and BITTREX_SECRET credentials for the monitor. See bittrex API docs for more info. After placing .env:
 
 > npm install
 

@@ -6,6 +6,7 @@ const AppError = require('./error.js');
 const BUY_LEVEL = -7;
 const SELL_LEVEL = 20;
 
+// Get currencies to buy
 const getBuyCurrencies = async () => {
     const losers = [];
     try {
@@ -22,6 +23,7 @@ const getBuyCurrencies = async () => {
     };
 };
 
+// Get currencies to sell
 const getSellCurrencies = async () => {
     const gainers = [];
     try {
