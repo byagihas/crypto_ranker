@@ -16,7 +16,18 @@ const AppError = require('./error.js');
 const app = new Router();
 
 // Start Routes
+
 app.get('/', (req, res, err) => {
+    try {
+        res.render('all_crypto');
+        res.end();
+       // var file = fs.readFileSync('./coins.json');
+    } catch(err) {
+        throw new AppError(err,'/ Error', '404', 'Issue with / route', false);
+    };
+});
+
+app.get('/currencies', (req, res, err) => {
     try {
         Monitor.getPrices().then((data) => {
             res.send(data);
@@ -100,8 +111,7 @@ app.get('/algo', (req, res, err) => {
         const test = new Algorithm('LINK', 10);
         test.getBalances().then((data)=> {
             res.send(data);
-        }); 
-        
+        });
     } catch(err) {
         throw new AppError(err,'Algo Error', '404', 'Issue with /algo route', false);
     };

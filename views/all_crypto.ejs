@@ -20,37 +20,29 @@
 </head>
 
 <body>
-
+    <div>
+      <h1>CryptoRanker Backend API</h1>
+      <h3>Data from Bittrex</h3>
+    </div>
     <div>
         <table class="table table-inverse">
             <thead>
               <tr>
-                <th>Index</th>
-                <th>Name</th>
-                <th>Bid</th>
-                <th>Ask</th>
-                <th>Last</th>
+                <th><a href='/currencies'>Prices</a></th>
+                <th><a href='/markets'>Markets</a></th>
               </tr>
             </thead>
-          
             <tbody>
-              <% Object.keys(crypto).map((key, i) => { %>
               <tr>
-                <td><%= i %></td>
-                <td><%= key %></td>
-                <td><%= crypto[key].bid %></td>
-                <td><%= crypto[key].ask %></td>
-                <td><%= crypto[key].last %></td>
               </tr>
-              <% }) %>
             </tbody>
           </table>
     </div>
-
+    <div>
+      <p>Currency endpoints separated by dashed in crypto-base format: /currencies/ada-eth</p>
+    </div>
 <script src="js/vendor/modernizr-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.3.1.min.js"><\/script>')</script>
-
 </body>
-
 </html>

@@ -15,8 +15,6 @@ class Algorithm {
     constructor(){
         this.cryptocurrencies = [];
         this.ordered_cryptocurrencies = [];
-        this.currency = currency;
-        this.amount = amount;
         this.active = false;
         this.boughtPrice = null;
         this.sellPrice = null;
@@ -33,6 +31,7 @@ class Algorithm {
     };
     orderCurrencies(){
         let crypto_unordered = this.cryptocurrencies;
+        return crypto_unordered;
     };
     async getBalances(){
         return Monitor.getBalances().then((data) => {
