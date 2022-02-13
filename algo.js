@@ -2,8 +2,12 @@
 /*
 This class should sort and order cryptocurrencies by rank of buy rating.
 Using data from crypto exchanges, and supplemental data from finance sources.
-*/
 
+should:
+-Retrieve and display buy and sell currencies.
+-Sort currencies based on rating.
+-Return top 10 currencies to buy and sell.
+*/
 'use strict';
 
 const AppError = require('./error.js');

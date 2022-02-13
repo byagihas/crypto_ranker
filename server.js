@@ -54,4 +54,4 @@ app.listen(process.env.PORT, process.env.IP, () => {
     } catch(err) {
         throw new AppError(err,'App listener error', '404', 'Issue with App listener', false);
     };
-})
+});

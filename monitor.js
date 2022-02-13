@@ -1,5 +1,5 @@
 // Monitor coin prices and log opportunities
-// Run: node monitor.js
+// Contains functions that use ccxt to retrieve crypto data.
 'use strict';
 
 require('dotenv').config();
@@ -8,6 +8,7 @@ const AppError = require('./error.js');
 const APIConnect = require('./api_conn.js');
 const fs = require('fs');
 
+//getMarkets
 const getMarkets = async () => {
     try{
         const bittrex = await APIConnect.Connect('bittrex');
@@ -18,6 +19,9 @@ const getMarkets = async () => {
     };
 };
 
+//getPrice
+//Gets singular price data for a cryptocurrency
+// params: currency
 const getPrice = async (currency) => {
     try {
         if(currency.length > 4){
@@ -33,6 +37,9 @@ const getPrice = async (currency) => {
     };
 };
 
+//getPrices
+//Gets prices of all currencies on bittrex.
+//params: none
 const getPrices = async () => {
     try{
         const bittrex = await APIConnect.Connect('bittrex');
@@ -43,6 +50,9 @@ const getPrices = async () => {
     };
 };
 
+//getBalances
+//Gets balances of all owned currencies on bittrex.
+//params: currency, might not be necessary as we're just displaying balances here.
 const getBalances = async (currency) => {
     let Balances = [];
     try {
