@@ -1,5 +1,5 @@
 // centralized error object that derives from Node’s Error
-class AppError extends Error {
+class ErrorHandler extends Error {
     constructor(name, httpCode, description, isOperational){
         super(Error, name, httpCode, description, isOperational);
         Error.call(this);
@@ -11,7 +11,7 @@ class AppError extends Error {
     }
 };
 
-AppError.prototype = Object.create(Error.prototype);
-AppError.prototype.constructor = AppError;
+ErrorHandler.prototype = Object.create(Error.prototype);
+ErrorHandler.prototype.constructor = ErrorHandler;
 
-module.exports = AppError;
+module.exports = ErrorHandler;

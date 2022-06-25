@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 const ccxt = require('ccxt');
-const AppError = require('./error.js');
+const ErrorHandler = require('./error');
 
 const Connect = async (cryptomarket) => {
     // Create Bittrex object through ccxt with api key and secret. Use .env file to securely connect
@@ -17,7 +17,7 @@ const Connect = async (cryptomarket) => {
             //need to add binanance/coinbase support etc.
         };
     } catch(error){
-        throw new AppError(error, 'BittrexAPI Error', '404', 'Issue with Bittrex API connection', false);
+        throw new ErrorHandler(error, 'BittrexAPI Error', '404', 'Issue with Bittrex API connection', false);
     };
 };
 
