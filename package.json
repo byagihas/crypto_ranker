@@ -28,7 +28,7 @@
     "ejs": "2.7.1",
     "encoding": "0.1.13",
     "escape-html": "1.0.3",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "express-promise-router": "4.0.1",
     "express-rate-limit": "5.0.0",
     "express-session": "1.16.2",
